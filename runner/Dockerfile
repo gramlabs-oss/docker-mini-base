@@ -24,8 +24,7 @@ RUN set -xe \
     # Ghostscript 支持
     libgs-dev \
     libfontconfig-dev \
-    libfreetype-dev \
-    libtiff5-dev' \ 
+    libfreetype-dev' \ 
     && runtimeDeps=' \
     # Erlang 运行时依赖
     libssl1.1 \
@@ -36,7 +35,6 @@ RUN set -xe \
     libgs9 \
     libfontconfig1 \
     libfreetype6 \
-    libtiff5 \
     # FreeMono 等字体（水印渲染）
     fonts-freefont-ttf' \
     && apt-get install -y --no-install-recommends $buildDeps \
