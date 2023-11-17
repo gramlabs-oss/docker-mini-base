@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-echo "Magick Version"
+echo "--- Magick ---"
 magick --version
-echo "Elixir Version"
+echo "--- Elixir ---"
 elixir --version
-echo "Rust Version"
+echo "---- Rust ----"
 rustc --version
 cargo --version
 rustup --version

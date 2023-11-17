@@ -1,6 +1,6 @@
 FROM hentioe/elixir:1.16.0-rc.0-otp-26-slim
 
-ENV RUST_VERSION="1.73.0" \
+ENV RUST_VERSION="1.74.0" \
     IMAGE_MAGICK_VERSION="7.1.1-21" \
     RUSTUP_VERSION="1.26.0" \
     RUST_ARCH="x86_64-unknown-linux-gnu" \
