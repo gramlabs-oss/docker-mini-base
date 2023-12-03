@@ -14,6 +14,26 @@ steps:
     commands:
       - echo -n "$(date +'%Y%m%d'),latest" > .tags
 
+  # - name: builder-build-push
+  #   image: plugins/docker
+  #   settings:
+  #     repo: gramoss/mini-build-base
+  #     username: gramoss
+  #     password:
+  #       from_secret: gramoss_pass
+  #     context: builder
+  #     dockerfile: builder/Dockerfile
+
+  # - name: runner-build-push
+  #   image: plugins/docker
+  #   settings:
+  #     repo: gramoss/mini-run-base
+  #     username: gramoss
+  #     password:
+  #       from_secret: gramoss_pass
+  #     context: runner
+  #     dockerfile: runner/Dockerfile
+
   - name: builder-build-push
     image: plugins/docker
     settings:
@@ -21,8 +41,10 @@ steps:
       username: gramoss
       password:
         from_secret: gramoss_pass
-      context: builder
-      dockerfile: builder/Dockerfile
+      context: builder-void
+      dockerfile: builder-void/Dockerfile
+      tags:
+        - void
 
   - name: runner-build-push
     image: plugins/docker
@@ -31,5 +53,7 @@ steps:
       username: gramoss
       password:
         from_secret: gramoss_pass
-      context: runner
-      dockerfile: runner/Dockerfile
+      context: runner-void
+      dockerfile: runner-void/Dockerfile
+      tags:
+        - void
