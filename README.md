@@ -4,7 +4,7 @@ Policr Mini 的基础镜像。
 
 ## 介绍
 
-本仓库的镜像基于统一的环境，当前是 `debian:bullseye`。
+本仓库的镜像基于统一的环境，当前是 `debian:bullseye` 和 `ghcr.io/void-linux/void-glibc-busybox:20231003R1`。
 
 ### 构建基础镜像
 
