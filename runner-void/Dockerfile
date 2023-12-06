@@ -1,13 +1,13 @@
 FROM ghcr.io/void-linux/void-glibc-busybox:20231003R1
 
-ENV IMAGE_MAGICK_VERSION="7.1.1-21"
+ENV IMAGE_MAGICK_VERSION="7.1.1-22"
 
 COPY cleanup.sh /usr/bin/void-cleanup
 COPY env-test.sh /usr/bin/env-test
 
 RUN set -xe \
     && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
-    && MAGICK_DOWNLOAD_SHA256="09402e5f17c6575ef9f010bb2e21ae1710f1f3426f115ad4317ee9129c32608e" \
+    && MAGICK_DOWNLOAD_SHA256="6dc2ac4292319b995c6f46de117cbe33089006371c7f1e1310748dfdfda35441" \
     && fetchDeps=' \
     curl' \
     && xbps-install -Sy \

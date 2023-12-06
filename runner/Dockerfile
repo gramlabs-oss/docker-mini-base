@@ -1,12 +1,12 @@
 FROM debian:bullseye
 
-ENV IMAGE_MAGICK_VERSION="7.1.1-21"
+ENV IMAGE_MAGICK_VERSION="7.1.1-22"
 
 COPY env-test.sh /usr/bin/env-test
 
 RUN set -xe \
     && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
-    && MAGICK_DOWNLOAD_SHA256="09402e5f17c6575ef9f010bb2e21ae1710f1f3426f115ad4317ee9129c32608e" \
+    && MAGICK_DOWNLOAD_SHA256="6dc2ac4292319b995c6f46de117cbe33089006371c7f1e1310748dfdfda35441" \
     && fetchDeps=' \
     curl \
     ca-certificates' \
@@ -51,7 +51,7 @@ RUN set -xe \
     # TODO: 只安装必要的库文件（自定义 prefix 安装到指定目录，再指定文件的安装过程，最后清理安装目标目录）
     && make install ) \
     # 刷新库缓存
-    && ldconfig /user/local/lib \
+    && ldconfig /usr/local/lib \
     # 清理构建依赖
     && apt-get purge -y --auto-remove $fetchDeps $buildDeps \
     # 安装运行时依赖

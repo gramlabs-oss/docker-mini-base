@@ -1,7 +1,7 @@
 FROM hentioe/elixir:1.16.0-rc.0-otp-26-slim
 
 ENV RUST_VERSION="1.74.0" \
-    IMAGE_MAGICK_VERSION="7.1.1-21" \
+    IMAGE_MAGICK_VERSION="7.1.1-22" \
     RUSTUP_VERSION="1.26.0" \
     RUST_ARCH="x86_64-unknown-linux-gnu" \
     RUSTUP_HOME=/usr/local/rustup \
@@ -13,7 +13,7 @@ COPY version-check.sh /usr/bin/version-check
 RUN set -xe \
     && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
     && RUSTUP_DOWNLOAD_URL="https://static.rust-lang.org/rustup/archive/${RUSTUP_VERSION}/${RUST_ARCH}/rustup-init" \
-    && MAGICK_DOWNLOAD_SHA256="09402e5f17c6575ef9f010bb2e21ae1710f1f3426f115ad4317ee9129c32608e" \
+    && MAGICK_DOWNLOAD_SHA256="6dc2ac4292319b995c6f46de117cbe33089006371c7f1e1310748dfdfda35441" \
     && RUSTUP_DOWNLOAD_SHA256="0b2f6c8f85a3d02fde2efc0ced4657869d73fccfce59defb4e8d29233116e6db" \
     && fetchDeps=' \
     curl \
@@ -55,7 +55,7 @@ RUN set -xe \
     && ./rustup-init -y --no-modify-path --profile minimal --default-toolchain $RUST_VERSION --default-host $RUST_ARCH \
     && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
     # 刷新库缓存
-    && ldconfig /user/local/lib \
+    && ldconfig /usr/local/lib \
     # 清理构建依赖
     && apt-get purge -y --auto-remove $fetchDeps $buildDeps \
     # 删除构建目录和下载文件
