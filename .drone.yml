@@ -34,7 +34,7 @@ steps:
       context: runner
       dockerfile: runner/Dockerfile
 
-  - name: builder-build-push
+  - name: builder-void-build-push
     image: plugins/docker
     settings:
       repo: gramoss/mini-build-base
@@ -46,7 +46,7 @@ steps:
       tags:
         - void
 
-  - name: runner-build-push
+  - name: runner-void-build-push
     image: plugins/docker
     settings:
       repo: gramoss/mini-run-base
