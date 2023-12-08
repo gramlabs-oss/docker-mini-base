@@ -30,6 +30,7 @@ RUN set -xe \
     && buildDeps=' \
     make \
     gcc \
+    pkg-config \
     # 添加 JPEG 支持
     libjpeg-turbo-devel \
     libgomp-devel' \ 
@@ -37,8 +38,8 @@ RUN set -xe \
     && runtimeDeps=' \
     # 构建 Rust 代码需要
     gcc \
+    clang \
     pkg-config \
-    libclang \
     # ImageMagick API 依赖
     libjpeg-turbo \
     libgomp' \
