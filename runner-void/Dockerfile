@@ -31,6 +31,7 @@ RUN set -xe \
     # Erlang 运行时依赖
     libssl3 \
     lksctp-tools \
+	ncurses-libs \
     # ImageMagick API 依赖
     libjpeg-turbo \
     libgs \
