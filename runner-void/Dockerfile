@@ -22,7 +22,7 @@ RUN set -xe \
     libjpeg-turbo-devel \
     # Ghostscript 支持
     ghostscript-devel \
-    # FreeType 支持
+    # Fontconfig 支持
     fontconfig-devel \
     # FreeType 支持
     freetype-devel \

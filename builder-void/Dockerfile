@@ -6,7 +6,9 @@ ENV RUST_VERSION="1.74.0" \
     RUST_ARCH="x86_64-unknown-linux-gnu" \
     RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
-    PATH=/usr/local/cargo/bin:$PATH
+    PATH=/usr/local/cargo/bin:$PATH \
+    # 此路径包含 ImageMagick 的库，它不在 pkg-config 的默认搜索路径下（仅 voidlinux）。
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/
 
 COPY version-check.sh /usr/bin/version-check
 
@@ -33,7 +35,7 @@ RUN set -xe \
     libgomp-devel' \ 
     # 此处的 `runtimeDeps` 不仅表示 app 的运行时依赖，它还包括构建 app 所需的依赖。
     && runtimeDeps=' \
-    # 构建 `img_grider` 需要
+    # 构建 Rust 代码需要
     gcc \
     pkg-config \
     libclang \
@@ -63,6 +65,6 @@ RUN set -xe \
     # 删除构建目录和下载文件
     && rm -rf $MAGICK_SRC rustup-init magick-src.tar.gz \
     # 执行 VoidLinux 的清理脚本
-	&& void-cleanup
+    && void-cleanup
 
 CMD ["version-check"]
