@@ -1,6 +1,8 @@
 FROM ghcr.io/void-linux/void-glibc-busybox:20231003R1
 
-ENV IMAGE_MAGICK_VERSION="7.1.1-22"
+ENV IMAGE_MAGICK_VERSION="7.1.1-22" \
+    # elixir expects utf8.
+    LANG=C.UTF-8 
 
 COPY cleanup.sh /usr/bin/void-cleanup
 COPY env-test.sh /usr/bin/env-test
@@ -26,12 +28,14 @@ RUN set -xe \
     fontconfig-devel \
     # FreeType 支持
     freetype-devel \
+    # Pregenerated locales
+    glibc-locales \
     ' \ 
     && runtimeDeps=' \
     # Erlang 运行时依赖
     libssl3 \
     lksctp-tools \
-	ncurses-libs \
+    ncurses-libs \
     # ImageMagick API 依赖
     libjpeg-turbo \
     libgs \
@@ -41,6 +45,9 @@ RUN set -xe \
     freefont-ttf \
     ' \
     && xbps-install -y $buildDeps \
+    # Set locale to C.UTF-8
+    && sed -i 's/^#C.UTF-8/C.UTF-8/' /etc/default/libc-locales \
+    && xbps-reconfigure -f glibc-locales \
     # 编译安装 ImiageMagick
     && export MAGICK_SRC="/usr/src/magick-src-${IMAGE_MAGICK_VERSION}}" \
     && mkdir -vp $MAGICK_SRC \
