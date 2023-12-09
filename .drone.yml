@@ -34,17 +34,17 @@ steps:
   #     context: runner
   #     dockerfile: runner/Dockerfile
 
-  # - name: builder-void-build-push
-  #   image: plugins/docker
-  #   settings:
-  #     repo: gramoss/mini-build-base
-  #     username: gramoss
-  #     password:
-  #       from_secret: gramoss_pass
-  #     context: builder-void
-  #     dockerfile: builder-void/Dockerfile
-  #     tags:
-  #       - void
+  - name: builder-void-build-push
+    image: plugins/docker
+    settings:
+      repo: gramoss/mini-build-base
+      username: gramoss
+      password:
+        from_secret: gramoss_pass
+      context: builder-void
+      dockerfile: builder-void/Dockerfile
+      tags:
+        - void
 
   - name: runner-void-build-push
     image: plugins/docker
