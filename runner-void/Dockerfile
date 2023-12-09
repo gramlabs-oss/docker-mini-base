@@ -58,7 +58,6 @@ RUN set -xe \
     # - 启用 Ghostscript/FreeType 支持
     && ./configure --disable-hdri --with-freetype --with-fontconfig --with-gslib \
     && make -j$(nproc) \
-    # TODO: 只安装必要的库文件（自定义 prefix 安装到指定目录，再指定文件的安装过程，最后清理安装目标目录）
     && make install ) \
     # 清理构建依赖
     && xbps-remove -Ry $fetchDeps $buildDeps \
