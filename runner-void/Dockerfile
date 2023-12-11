@@ -42,6 +42,7 @@ RUN set -xe \
     fontconfig \
     freetype \
     # FreeMono 等字体（水印渲染）
+    # TODO：手动安装字体（仅 FreeMono）：https://ftp.gnu.org/gnu/freefont/freefont-ttf-20120503.zip
     freefont-ttf \
     ' \
     && xbps-install -y $buildDeps \
@@ -59,6 +60,11 @@ RUN set -xe \
     && ./configure --disable-hdri --with-freetype --with-fontconfig --with-gslib \
     && make -j$(nproc) \
     && make install ) \
+    # strip 新安装的二进制文件（包括 Magick）
+    && scanelf --nobanner -E ET_EXEC -BF '%F' --recursive /usr/local | xargs -r strip --strip-all \
+    && scanelf --nobanner -E ET_DYN -BF '%F' --recursive /usr/local | xargs -r strip --strip-unneeded \
+    # TODO: Magick 安装的库包含一些体积较大的 .a 文件，调查并实验它们是否可删除。
+    && rm /usr/local/lib/libMagick*.a \
     # 清理构建依赖
     && xbps-remove -Ry $fetchDeps $buildDeps \
     # 安装运行时依赖
@@ -67,7 +73,7 @@ RUN set -xe \
     && ldconfig /usr/local/lib \
     # 删除构建目录和下载文件
     && rm -rf $MAGICK_SRC magick-src.tar.gz \
-    # 执行 VoidLinux 的清理脚本
+    # 执行 Void Linux 的清理脚本
     && void-cleanup
 
 CMD ["env-test"]
