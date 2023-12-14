@@ -2,7 +2,7 @@ FROM ghcr.io/void-linux/void-glibc-busybox:20231003R1
 
 ENV IMAGE_MAGICK_VERSION="7.1.1-23" \
     # elixir expects utf8.
-    LANG=C.UTF-8 
+    LANG=C.UTF-8
 
 COPY cleanup.sh /usr/bin/void-cleanup
 COPY env-test.sh /usr/bin/env-test
@@ -38,7 +38,8 @@ RUN set -xe \
     glibc-locales \
     ' \ 
     && runtimeDeps=' \
-    # Erlang 运行时依赖
+    # Elixir 运行时依赖
+    libstdc++ \
     libssl3 \
     lksctp-tools \
     ncurses-libs \
@@ -77,7 +78,9 @@ RUN set -xe \
     # 清理 ImageMagick 的 .a 库文件
     && rm /usr/local/lib/libMagick*.a \
     # 清理构建依赖
-    && xbps-remove -Ry $fetchDeps $buildDeps \
+    && xbps-remove -Roy $fetchDeps $buildDeps \
+	# Execute twice to ensure dependencies are removed.
+    && xbps-remove -Roy $fetchDeps $buildDeps \
     # 安装运行时依赖
     && xbps-install -y $runtimeDeps \
     # 删除构建目录和下载文件

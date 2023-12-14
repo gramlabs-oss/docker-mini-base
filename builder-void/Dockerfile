@@ -36,6 +36,11 @@ RUN set -xe \
     libgomp-devel' \ 
     # 此处的 `runtimeDeps` 不仅表示 app 的运行时依赖，它还包括构建 app 所需的依赖。
     && runtimeDeps=' \
+    # Elixir 运行时依赖
+    libstdc++ \
+    libssl3 \
+    lksctp-tools \
+    ncurses-libs \
     # 构建 Rust 代码需要
     gcc \
     clang \
@@ -58,7 +63,9 @@ RUN set -xe \
     && ./rustup-init -y --no-modify-path --profile minimal --default-toolchain $RUST_VERSION --default-host $RUST_ARCH \
     && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
     # 清理构建依赖
-    && xbps-remove -Ry $fetchDeps $buildDeps \
+    && xbps-remove -Roy $fetchDeps $buildDeps \
+	# Execute twice to ensure dependencies are removed.
+    && xbps-remove -Roy $fetchDeps $buildDeps \
     # 安装运行时依赖
     && xbps-install -y $runtimeDeps \
     # 刷新库缓存
