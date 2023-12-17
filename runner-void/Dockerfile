@@ -1,27 +1,40 @@
-FROM ghcr.io/void-linux/void-glibc-busybox:20231003R1
+FROM ghcr.io/void-linux/void-glibc-busybox:20231202R1
 
 ENV IMAGE_MAGICK_VERSION="7.1.1-23" \
     # elixir expects utf8.
-    LANG=C.UTF-8
+    LANG=C.UTF-8 \
+    # Declare runtime dependencies.
+    RUNTIME_DEPS=' \
+    # Elixir 运行时依赖
+    libstdc++ \
+    libssl3 \
+    lksctp-tools \
+    ncurses-libs \
+    # ImageMagick API 依赖
+    libjpeg-turbo \
+    libgs \
+    fontconfig \
+    freetype \
+    '
 
 COPY cleanup.sh /usr/bin/void-cleanup
 COPY env-test.sh /usr/bin/env-test
 
 RUN set -xe \
-    && export FREEFONT_ARCHIVE=freefont-ttf-20120503.zip \
+    && export LATOFONT_ARCHIVE=Lato2OFL.zip \
     && export MAGICK_ARCHIVE=magick-src.tar.gz \
     && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
     && MAGICK_DOWNLOAD_SHA256="7793a2de4f11c3ee08dd5d783713ca0bc0833da533bc00973d31eaee89bdb0d0" \
-    && FREEFONT_DOWNLOAD_URL="https://ftp.gnu.org/gnu/freefont/$FREEFONT_ARCHIVE" \
-    && FREEFONT_DOWNLOAD_SHA256="7c85baf1bf82a1a1845d1322112bc6ca982221b484e3b3925022e25b5cae89af" \
+    && LATOFONT_DOWNLOAD_URL="https://www.latofonts.com/files/$LATOFONT_ARCHIVE" \
+    && LATOFONT_DOWNLOAD_SHA256="42b54e96c07e299d967fc3227c7bd63a20d6cfb1dc8fd6dae83628091e20a5b8" \
     && fetchDeps=' \
     curl' \
     && xbps-install -Sy \
-    && xbps-install -y $fetchDeps \
+    && xbps-install -Ay $fetchDeps \
     && curl -fSL -o $MAGICK_ARCHIVE "$MAGICK_DOWNLOAD_URL" \
     && echo "$MAGICK_DOWNLOAD_SHA256  $MAGICK_ARCHIVE" | sha256sum -c - \
-    && curl -fSL -o $FREEFONT_ARCHIVE "$FREEFONT_DOWNLOAD_URL" \
-    && echo "$FREEFONT_DOWNLOAD_SHA256  $FREEFONT_ARCHIVE" | sha256sum -c - \
+    && curl -fSL -o $LATOFONT_ARCHIVE "$LATOFONT_DOWNLOAD_URL" \
+    && echo "$LATOFONT_DOWNLOAD_SHA256  $LATOFONT_ARCHIVE" | sha256sum -c - \
     && buildDeps=' \
     make \
     gcc \
@@ -37,19 +50,7 @@ RUN set -xe \
     # Pregenerated locales
     glibc-locales \
     ' \ 
-    && runtimeDeps=' \
-    # Elixir 运行时依赖
-    libstdc++ \
-    libssl3 \
-    lksctp-tools \
-    ncurses-libs \
-    # ImageMagick API 依赖
-    libjpeg-turbo \
-    libgs \
-    fontconfig \
-    freetype \
-    ' \
-    && xbps-install -y $buildDeps \
+    && xbps-install -Ay $buildDeps \
     # Set locale to C.UTF-8
     && sed -i 's/^#C.UTF-8/C.UTF-8/' /etc/default/libc-locales \
     && xbps-reconfigure -f glibc-locales \
@@ -64,27 +65,33 @@ RUN set -xe \
     && ./configure --disable-hdri --with-freetype --with-fontconfig --with-gslib \
     && make -j$(nproc) \
     && make install ) \
-    # 安装 FreeMono 字体
-    && unzip -d freefont $FREEFONT_ARCHIVE && mv freefont/freefont-*/* freefont/ && rmdir freefont/freefont-* \
+    # 安装字体
     && mkdir -p /usr/share/fonts/TTF \
-    && install -m644 freefont/FreeMono*.ttf /usr/share/fonts/TTF \
+    && unzip -d latofont $LATOFONT_ARCHIVE && mv latofont/Lato2OFL/* latofont/ && rmdir latofont/Lato2OFL \
+    && latoFonts=' \
+    latofont/Lato-Regular.ttf \
+    latofont/Lato-Medium.ttf \
+    latofont/Lato-Bold.ttf \
+    latofont/Lato-Heavy.ttf \
+    latofont/Lato-Black.ttf \
+    ' \
+    # 安装各个字重的 Lato 字体（Regular 到 Black）
+    && install -m644 $latoFonts /usr/share/fonts/TTF \
     # strip 新安装的二进制文件（包括 ImageMagick）
     && scanelf --nobanner -E ET_EXEC -BF '%F' --recursive /usr/local | xargs -r strip --strip-all \
     && scanelf --nobanner -E ET_DYN -BF '%F' --recursive /usr/local | xargs -r strip --strip-unneeded \
     # 刷写字体缓存
-    && fc-cache -f -v \
+    && fc-cache -fv \
     # 刷新库缓存
     && ldconfig /usr/local/lib \
     # 清理 ImageMagick 的 .a 库文件
     && rm /usr/local/lib/libMagick*.a \
-    # 清理构建依赖
-    && xbps-remove -Roy $fetchDeps $buildDeps \
-	# Execute twice to ensure dependencies are removed.
+    # 清理构建时依赖
     && xbps-remove -Roy $fetchDeps $buildDeps \
     # 安装运行时依赖
-    && xbps-install -y $runtimeDeps \
+    && xbps-install -y $RUNTIME_DEPS \
     # 删除构建目录和下载文件
-    && rm -rf $MAGICK_SRC $MAGICK_ARCHIVE freefont $FREEFONT_ARCHIVE \
+    && rm -rf $MAGICK_SRC $MAGICK_ARCHIVE latofont $LATOFONT_ARCHIVE \
     # 执行 Void Linux 的清理脚本
     && void-cleanup
 

@@ -2,7 +2,7 @@
 
 convert logo: input.jpg &&
     magick input.jpg \
-        -font FreeMono \
+        -font 'Lato-Regular' \
         -fill blue \
         -gravity southeast \
         -annotate +10+10 \
