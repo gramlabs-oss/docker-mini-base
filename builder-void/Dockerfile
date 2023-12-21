@@ -17,14 +17,15 @@ RUN set -xe \
     && if [ "$TARGETARCH" = "arm64" ]; then \
     # Support arm64.
     export RUST_ARCH="aarch64-unknown-linux-gnu"; \
+    export RUSTUP_DOWNLOAD_SHA256="673e336c81c65e6b16dcdede33f4cc9ed0f08bde1dbe7a935f113605292dc800"; \
     elif [ "$TARGETARCH" = "amd64" ]; then \
     # Support amd64.
     export RUST_ARCH="x86_64-unknown-linux-gnu"; \
+    export RUSTUP_DOWNLOAD_SHA256="0b2f6c8f85a3d02fde2efc0ced4657869d73fccfce59defb4e8d29233116e6db"; \
     fi \
     && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
     && RUSTUP_DOWNLOAD_URL="https://static.rust-lang.org/rustup/archive/${RUSTUP_VERSION}/${RUST_ARCH}/rustup-init" \
     && MAGICK_DOWNLOAD_SHA256="7793a2de4f11c3ee08dd5d783713ca0bc0833da533bc00973d31eaee89bdb0d0" \
-    && RUSTUP_DOWNLOAD_SHA256="0b2f6c8f85a3d02fde2efc0ced4657869d73fccfce59defb4e8d29233116e6db" \
     && fetchDeps=' \
     curl' \
     && xbps-install -Sy \
@@ -78,7 +79,7 @@ RUN set -xe \
     && ldconfig /usr/local/lib \
     # 删除构建目录和下载文件
     && rm -rf $MAGICK_SRC rustup-init magick-src.tar.gz \
-    # 执行 VoidLinux 的清理脚本
+    # 执行 Void Linux 的清理脚本
     && void-cleanup
 
 CMD ["version-check"]
