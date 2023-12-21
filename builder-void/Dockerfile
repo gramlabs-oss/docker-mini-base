@@ -1,18 +1,26 @@
 FROM hentioe/elixir:1.16.0-rc.1-otp-26-void
 
+ARG TARGETARCH
+
 ENV RUST_VERSION="1.74.1" \
     IMAGE_MAGICK_VERSION="7.1.1-23" \
     RUSTUP_VERSION="1.26.0" \
-    RUST_ARCH="x86_64-unknown-linux-gnu" \
     RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH=/usr/local/cargo/bin:$PATH \
-    # 此路径包含 ImageMagick 的库，它不在 pkg-config 的默认搜索路径下（仅 voidlinux）。
+    # 此路径包含 ImageMagick 的库，它不在 pkg-config 的默认搜索路径下（仅 Void Linux）。
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/
 
 COPY version-check.sh /usr/bin/version-check
 
 RUN set -xe \
+    && if [ "$TARGETARCH" = "arm64" ]; then \
+    # Support arm64.
+    export RUST_ARCH="aarch64-unknown-linux-gnu"; \
+    elif [ "$TARGETARCH" = "amd64" ]; then \
+    # Support amd64.
+    export RUST_ARCH="x86_64-unknown-linux-gnu"; \
+    fi \
     && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
     && RUSTUP_DOWNLOAD_URL="https://static.rust-lang.org/rustup/archive/${RUSTUP_VERSION}/${RUST_ARCH}/rustup-init" \
     && MAGICK_DOWNLOAD_SHA256="7793a2de4f11c3ee08dd5d783713ca0bc0833da533bc00973d31eaee89bdb0d0" \
@@ -20,7 +28,7 @@ RUN set -xe \
     && fetchDeps=' \
     curl' \
     && xbps-install -Sy \
-    && xbps-install -y $fetchDeps \
+    && xbps-install -Ay $fetchDeps \
     # 下载并校验文件
     && curl -fSL -o magick-src.tar.gz "$MAGICK_DOWNLOAD_URL" \
     && echo "$MAGICK_DOWNLOAD_SHA256  magick-src.tar.gz" | sha256sum -c - \
@@ -48,7 +56,7 @@ RUN set -xe \
     # ImageMagick API 依赖
     libjpeg-turbo \
     libgomp' \
-    && xbps-install -y $buildDeps \
+    && xbps-install -Ay $buildDeps \
     # 编译安装 ImiageMagick
     && export MAGICK_SRC="/usr/src/magick-src-${IMAGE_MAGICK_VERSION}}" \
     && mkdir -vp $MAGICK_SRC \
@@ -63,8 +71,6 @@ RUN set -xe \
     && ./rustup-init -y --no-modify-path --profile minimal --default-toolchain $RUST_VERSION --default-host $RUST_ARCH \
     && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
     # 清理构建依赖
-    && xbps-remove -Roy $fetchDeps $buildDeps \
-	# Execute twice to ensure dependencies are removed.
     && xbps-remove -Roy $fetchDeps $buildDeps \
     # 安装运行时依赖
     && xbps-install -y $runtimeDeps \
