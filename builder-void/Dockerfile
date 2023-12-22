@@ -1,4 +1,4 @@
-FROM hentioe/elixir:1.16.0-rc.1-otp-26-void
+FROM hentioe/elixir:1.16.0-otp-26-void
 
 ARG TARGETARCH
 
