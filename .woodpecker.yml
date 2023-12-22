@@ -34,3 +34,23 @@ steps:
     when:
       branch: main
       event: push
+
+  builder-slim-build-push:
+    image: plugins/docker
+    settings:
+      repo: gramoss/mini-build-base
+      username: gramoss
+      password:
+        from_secret: gramoss_pass
+      context: builder
+      dockerfile: builder/Dockerfile
+
+  runner-slim-build-push:
+    image: plugins/docker
+    settings:
+      repo: gramoss/mini-run-base
+      username: gramoss
+      password:
+        from_secret: gramoss_pass
+      context: runner
+      dockerfile: runner/Dockerfile
