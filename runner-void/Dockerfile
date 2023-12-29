@@ -1,6 +1,6 @@
 FROM ghcr.io/void-linux/void-glibc-busybox:20231202R1
 
-ENV IMAGE_MAGICK_VERSION="7.1.1-23" \
+ENV IMAGE_MAGICK_VERSION="7.1.1-24" \
     # elixir expects utf8.
     LANG=C.UTF-8 \
     # Declare runtime dependencies.
@@ -24,12 +24,14 @@ RUN set -xe \
     && export LATOFONT_ARCHIVE=Lato2OFL.zip \
     && export MAGICK_ARCHIVE=magick-src.tar.gz \
     && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
-    && MAGICK_DOWNLOAD_SHA256="7793a2de4f11c3ee08dd5d783713ca0bc0833da533bc00973d31eaee89bdb0d0" \
+    && MAGICK_DOWNLOAD_SHA256="b98174148ddd875e64a861f5a4606c777bb7f33ac6b780886756f05ff971fb6f" \
     && LATOFONT_DOWNLOAD_URL="https://www.latofonts.com/files/$LATOFONT_ARCHIVE" \
     && LATOFONT_DOWNLOAD_SHA256="42b54e96c07e299d967fc3227c7bd63a20d6cfb1dc8fd6dae83628091e20a5b8" \
     && fetchDeps=' \
     curl' \
-    && xbps-install -Sy \
+    # Skip extraction of `/etc/hosts` file (it is read-only)
+    && echo noextract=/etc/hosts >> /etc/xbps.d/noextract.conf \
+    && xbps-install -Suy \
     && xbps-install -Ay $fetchDeps \
     && curl -fSL -o $MAGICK_ARCHIVE "$MAGICK_DOWNLOAD_URL" \
     && echo "$MAGICK_DOWNLOAD_SHA256  $MAGICK_ARCHIVE" | sha256sum -c - \
