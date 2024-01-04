@@ -1,12 +1,12 @@
 FROM debian:bullseye
 
-ENV IMAGE_MAGICK_VERSION="7.1.1-24"
+ENV IMAGE_MAGICK_VERSION="7.1.1-25"
 
 COPY env-test.sh /usr/bin/env-test
 
 RUN set -xe \
     && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
-    && MAGICK_DOWNLOAD_SHA256="b98174148ddd875e64a861f5a4606c777bb7f33ac6b780886756f05ff971fb6f" \
+    && MAGICK_DOWNLOAD_SHA256="983df08061bdcf95fe49146444fd1deb9c176b06359d3431053f59813c3e9668" \
     && fetchDeps=' \
     curl \
     ca-certificates' \

@@ -1,7 +1,7 @@
 FROM hentioe/elixir:1.16.0-otp-26-slim
 
 ENV RUST_VERSION="1.75.0" \
-    IMAGE_MAGICK_VERSION="7.1.1-24" \
+    IMAGE_MAGICK_VERSION="7.1.1-25" \
     RUSTUP_VERSION="1.26.0" \
     RUST_ARCH="x86_64-unknown-linux-gnu" \
     RUSTUP_HOME=/usr/local/rustup \
@@ -13,7 +13,7 @@ COPY version-check.sh /usr/bin/version-check
 RUN set -xe \
     && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
     && RUSTUP_DOWNLOAD_URL="https://static.rust-lang.org/rustup/archive/${RUSTUP_VERSION}/${RUST_ARCH}/rustup-init" \
-    && MAGICK_DOWNLOAD_SHA256="b98174148ddd875e64a861f5a4606c777bb7f33ac6b780886756f05ff971fb6f" \
+    && MAGICK_DOWNLOAD_SHA256="983df08061bdcf95fe49146444fd1deb9c176b06359d3431053f59813c3e9668" \
     && RUSTUP_DOWNLOAD_SHA256="0b2f6c8f85a3d02fde2efc0ced4657869d73fccfce59defb4e8d29233116e6db" \
     && fetchDeps=' \
     curl \
