@@ -3,6 +3,16 @@ when:
       exclude: ["README.md", ".drone.yml"]
 
 steps:
+  generate-image-tags:
+    image: busybox
+    when:
+      branch:
+        - main
+      event:
+        - push
+    commands:
+      - echo -n "$(date +'%Y%m%d'),latest" > .tags
+
   builder-void-build-push:
     image: woodpeckerci/plugin-docker-buildx
     settings:
@@ -13,8 +23,6 @@ steps:
       context: builder-void
       dockerfile: builder-void/Dockerfile
       platforms: linux/amd64,linux/arm64/v8
-      tags:
-        - void
     when:
       branch: main
       event: push
@@ -29,28 +37,26 @@ steps:
       context: runner-void
       dockerfile: runner-void/Dockerfile
       platforms: linux/amd64,linux/arm64/v8
-      tags:
-        - void
     when:
       branch: main
       event: push
 
-  builder-slim-build-push:
-    image: plugins/docker
-    settings:
-      repo: gramoss/mini-build-base
-      username: gramoss
-      password:
-        from_secret: gramoss_pass
-      context: builder
-      dockerfile: builder/Dockerfile
+  # builder-slim-build-push:
+  #   image: plugins/docker
+  #   settings:
+  #     repo: gramoss/mini-build-base
+  #     username: gramoss
+  #     password:
+  #       from_secret: gramoss_pass
+  #     context: builder
+  #     dockerfile: builder/Dockerfile
 
-  runner-slim-build-push:
-    image: plugins/docker
-    settings:
-      repo: gramoss/mini-run-base
-      username: gramoss
-      password:
-        from_secret: gramoss_pass
-      context: runner
-      dockerfile: runner/Dockerfile
+  # runner-slim-build-push:
+  #   image: plugins/docker
+  #   settings:
+  #     repo: gramoss/mini-run-base
+  #     username: gramoss
+  #     password:
+  #       from_secret: gramoss_pass
+  #     context: runner
+  #     dockerfile: runner/Dockerfile
