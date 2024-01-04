@@ -1,6 +1,6 @@
 FROM ghcr.io/void-linux/void-glibc-busybox:20231202R1
 
-ENV IMAGE_MAGICK_VERSION="7.1.1-24" \
+ENV IMAGE_MAGICK_VERSION="7.1.1-25" \
     # elixir expects utf8.
     LANG=C.UTF-8 \
     # Declare runtime dependencies.
@@ -24,7 +24,7 @@ RUN set -xe \
     && export LATOFONT_ARCHIVE=Lato2OFL.zip \
     && export MAGICK_ARCHIVE=magick-src.tar.gz \
     && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
-    && MAGICK_DOWNLOAD_SHA256="b98174148ddd875e64a861f5a4606c777bb7f33ac6b780886756f05ff971fb6f" \
+    && MAGICK_DOWNLOAD_SHA256="983df08061bdcf95fe49146444fd1deb9c176b06359d3431053f59813c3e9668" \
     && LATOFONT_DOWNLOAD_URL="https://www.latofonts.com/files/$LATOFONT_ARCHIVE" \
     && LATOFONT_DOWNLOAD_SHA256="42b54e96c07e299d967fc3227c7bd63a20d6cfb1dc8fd6dae83628091e20a5b8" \
     && fetchDeps=' \
