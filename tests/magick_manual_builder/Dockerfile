@@ -3,7 +3,7 @@
 
 FROM ghcr.io/void-linux/void-glibc-busybox:20231003R1
 
-ENV IMAGE_MAGICK_VERSION="7.1.1-25" \
+ENV IMAGE_MAGICK_VERSION="7.1.1-26" \
     # elixir expects utf8.
     LANG=C.UTF-8
 
@@ -11,7 +11,7 @@ WORKDIR /src
 
 RUN set -xe \
     && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
-    && MAGICK_DOWNLOAD_SHA256="983df08061bdcf95fe49146444fd1deb9c176b06359d3431053f59813c3e9668" \
+    && MAGICK_DOWNLOAD_SHA256="ac21f65936a1fd1a073ebd0e653c6d133c43cc02d77977480f70c89856b1241b" \
     && fetchDeps=' \
     curl' \
     && xbps-install -Sy \
