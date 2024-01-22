@@ -3,7 +3,7 @@ FROM hentioe/elixir:1.16.0-otp-26-void
 ARG TARGETARCH
 
 ENV RUST_VERSION="1.75.0" \
-    IMAGE_MAGICK_VERSION="7.1.1-26" \
+    IMAGE_MAGICK_VERSION="7.1.1-27" \
     RUSTUP_VERSION="1.26.0" \
     RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
@@ -25,7 +25,7 @@ RUN set -xe \
     fi \
     && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
     && RUSTUP_DOWNLOAD_URL="https://static.rust-lang.org/rustup/archive/${RUSTUP_VERSION}/${RUST_ARCH}/rustup-init" \
-    && MAGICK_DOWNLOAD_SHA256="ac21f65936a1fd1a073ebd0e653c6d133c43cc02d77977480f70c89856b1241b" \
+    && MAGICK_DOWNLOAD_SHA256="51114819ebed50b9f62403b6f7618ec3251dcaea1b1f5893728fbee02ceb3cfa" \
     && fetchDeps=' \
     curl' \
     # Skip extraction of `/etc/hosts` file (it is read-only)
