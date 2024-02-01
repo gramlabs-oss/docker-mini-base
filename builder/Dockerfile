@@ -1,4 +1,4 @@
-FROM hentioe/elixir:1.16.0-otp-26-slim
+FROM hentioe/elixir:1.16.1-otp-26-slim
 
 ENV RUST_VERSION="1.75.0" \
     IMAGE_MAGICK_VERSION="7.1.1-27" \
