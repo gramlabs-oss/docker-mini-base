@@ -32,6 +32,7 @@ RUN set -xe \
     # Skip extraction of `/etc/hosts` file (it is read-only)
     && echo noextract=/etc/hosts >> /etc/xbps.d/noextract.conf \
     && xbps-install -Suy \
+    && xbps-install -u xbps \
     && xbps-install -Ay $fetchDeps \
     && curl -fSL -o $MAGICK_ARCHIVE "$MAGICK_DOWNLOAD_URL" \
     && echo "$MAGICK_DOWNLOAD_SHA256  $MAGICK_ARCHIVE" | sha256sum -c - \
