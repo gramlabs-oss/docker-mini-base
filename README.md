@@ -4,7 +4,7 @@ Policr Mini 的基础镜像。
 
 ## 介绍
 
-本项目的镜像总是基于统一的环境，当前是 `ghcr.io/void-linux/void-glibc-busybox:20231202R1`。这是 Void Linux 的官方镜像，基于 glibc/BusyBox 表明它同时具备体积小巧和兼容性高的优势。
+本项目的镜像总是基于统一的环境，当前是 [`void-linux/void-glibc-busybox:20240303R1`](https://github.com/void-linux/void-containers/pkgs/container/void-glibc-busybox)。这是 Void Linux 的官方镜像，基于 glibc/BusyBox 表明它同时具备体积小巧和兼容性高的优势。
 
 _本仓库仍然保留了已过时的 `debian:bullseye` 系列镜像，但是它们不支持 `arm64` 环境。_
 
