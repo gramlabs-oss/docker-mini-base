@@ -1,10 +1,13 @@
-FROM hentioe/elixir:1.16.2-otp-26-void
+FROM hentioe/elixir:1.16.3-otp-26-void
 
 ARG TARGETARCH
 
-ENV RUST_VERSION="1.77.0" \
-    RUSTUP_VERSION="1.27.0" \
-    IMAGE_MAGICK_VERSION="7.1.1-29" \
+ENV RUST_VERSION="1.78.0" \
+    RUSTUP_VERSION="1.27.1" \
+    IMAGE_MAGICK_VERSION="7.1.1-32" \
+    MAGICK_DOWNLOAD_SHA256="fda0c1a5fdf511721893014370a6303413c70e0c11f2b543a7a4aff36f8c6e92" \
+    RUSTUP_DOWNLOAD_SHA256_AARCH64="1cffbf51e63e634c746f741de50649bbbcbd9dbe1de363c9ecef64e278dba2b2" \
+    RUSTUP_DOWNLOAD_SHA256_X86_64="6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d" \
     RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH=/usr/local/cargo/bin:$PATH \
@@ -17,15 +20,14 @@ RUN set -xe \
     && if [ "$TARGETARCH" = "arm64" ]; then \
     # Support arm64.
     export RUST_ARCH="aarch64-unknown-linux-gnu"; \
-    export RUSTUP_DOWNLOAD_SHA256="76cd420cb8a82e540025c5f97bda3c65ceb0b0661d5843e6ef177479813b0367"; \
+    export RUSTUP_DOWNLOAD_SHA256="$RUSTUP_DOWNLOAD_SHA256_AARCH64"; \
     elif [ "$TARGETARCH" = "amd64" ]; then \
     # Support amd64.
     export RUST_ARCH="x86_64-unknown-linux-gnu"; \
-    export RUSTUP_DOWNLOAD_SHA256="a3d541a5484c8fa2f1c21478a6f6c505a778d473c21d60a18a4df5185d320ef8"; \
+    export RUSTUP_DOWNLOAD_SHA256="$RUSTUP_DOWNLOAD_SHA256_X86_64"; \
     fi \
-    && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
     && RUSTUP_DOWNLOAD_URL="https://static.rust-lang.org/rustup/archive/${RUSTUP_VERSION}/${RUST_ARCH}/rustup-init" \
-    && MAGICK_DOWNLOAD_SHA256="27bd25f945efdd7e38f6f9845a7c0a391fdb732f652dda140b743769c5f106e8" \
+    && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
     && fetchDeps=' \
     curl' \
     # Skip extraction of `/etc/hosts` file (it is read-only)
