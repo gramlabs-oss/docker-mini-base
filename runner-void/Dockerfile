@@ -1,7 +1,7 @@
-FROM ghcr.io/void-linux/void-glibc-busybox:20240303R1
+FROM ghcr.io/void-linux/void-glibc-busybox:20240526R1
 
-ENV IMAGE_MAGICK_VERSION="7.1.1-32" \
-    MAGICK_DOWNLOAD_SHA256="fda0c1a5fdf511721893014370a6303413c70e0c11f2b543a7a4aff36f8c6e92" \
+ENV IMAGE_MAGICK_VERSION="7.1.1-34" \
+    MAGICK_DOWNLOAD_SHA256="19f4303774b56be182c576b266c34bc824fcaef1d1d243192344d015adb0ec28" \
     # elixir expects utf8.
     LANG=C.UTF-8 \
     # Declare runtime dependencies.

@@ -1,9 +1,9 @@
 # Magick 的手动构建测试环境。
 # 此镜像会下载并解压源代码，安装必要的构建工具链。
 
-FROM ghcr.io/void-linux/void-glibc-busybox:20231003R1
+FROM ghcr.io/void-linux/void-glibc-busybox:20240526R1
 
-ENV IMAGE_MAGICK_VERSION="7.1.1-32" \
+ENV IMAGE_MAGICK_VERSION="7.1.1-34" \
     # elixir expects utf8.
     LANG=C.UTF-8
 
@@ -11,7 +11,7 @@ WORKDIR /src
 
 RUN set -xe \
     && MAGICK_DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${IMAGE_MAGICK_VERSION}.tar.gz" \
-    && MAGICK_DOWNLOAD_SHA256="fda0c1a5fdf511721893014370a6303413c70e0c11f2b543a7a4aff36f8c6e92" \
+    && MAGICK_DOWNLOAD_SHA256="19f4303774b56be182c576b266c34bc824fcaef1d1d243192344d015adb0ec28" \
     && fetchDeps=' \
     curl' \
     && xbps-install -Sy \
