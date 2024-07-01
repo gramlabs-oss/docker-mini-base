@@ -1,16 +1,17 @@
+when:
+  - branch: [main]
+    event: push
+
 steps:
-  generate-image-tags:
+  image-tags-gen:
     image: busybox
-    when:
-      branch:
-        - main
-      event:
-        - push
     commands:
       - echo -n "$(date +'%Y%m%d'),latest" > .tags
 
   builder-void-build-push:
-    image: woodpeckerci/plugin-docker-buildx
+    image: reg.hentioe.dev/library/plugin-docker-buildx
+    privileged: true
+    pull: true
     settings:
       repo: gramoss/mini-build-base
       username: gramoss
@@ -19,12 +20,11 @@ steps:
       context: builder-void
       dockerfile: builder-void/Dockerfile
       platforms: linux/amd64,linux/arm64/v8
-    when:
-      branch: main
-      event: push
 
   runner-void-build-push:
-    image: woodpeckerci/plugin-docker-buildx
+    image: reg.hentioe.dev/library/plugin-docker-buildx
+    privileged: true
+    pull: true
     settings:
       repo: gramoss/mini-run-base
       username: gramoss
@@ -33,9 +33,6 @@ steps:
       context: runner-void
       dockerfile: runner-void/Dockerfile
       platforms: linux/amd64,linux/arm64/v8
-    when:
-      branch: main
-      event: push
 
   # builder-slim-build-push:
   #   image: plugins/docker
