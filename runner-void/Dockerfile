@@ -1,4 +1,4 @@
-FROM ghcr.io/void-linux/void-glibc-busybox:20240526R1
+FROM ghcr.io/void-linux/void-glibc-busybox:20250616R2
 
 ENV IMAGE_MAGICK_VERSION="7.1.1-34" \
     MAGICK_DOWNLOAD_SHA256="19f4303774b56be182c576b266c34bc824fcaef1d1d243192344d015adb0ec28" \

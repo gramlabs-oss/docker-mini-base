@@ -1,13 +1,13 @@
-FROM hentioe/elixir:1.16.3-otp-26-void
+FROM hentioe/elixir:1.18.4-otp-28-void
 
 ARG TARGETARCH
 
-ENV RUST_VERSION="1.79.0" \
-    RUSTUP_VERSION="1.27.1" \
+ENV RUST_VERSION="1.88.0" \
+    RUSTUP_VERSION="1.28.2" \
     IMAGE_MAGICK_VERSION="7.1.1-34" \
     MAGICK_DOWNLOAD_SHA256="19f4303774b56be182c576b266c34bc824fcaef1d1d243192344d015adb0ec28" \
-    RUSTUP_DOWNLOAD_SHA256_AARCH64="1cffbf51e63e634c746f741de50649bbbcbd9dbe1de363c9ecef64e278dba2b2" \
-    RUSTUP_DOWNLOAD_SHA256_X86_64="6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d" \
+    RUSTUP_DOWNLOAD_SHA256_AARCH64="e3853c5a252fca15252d07cb23a1bdd9377a8c6f3efa01531109281ae47f841c" \
+    RUSTUP_DOWNLOAD_SHA256_X86_64="20a06e644b0d9bd2fbdbfd52d42540bdde820ea7df86e92e533c073da0cdd43c" \
     RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH=/usr/local/cargo/bin:$PATH \
@@ -46,7 +46,7 @@ RUN set -xe \
     pkg-config \
     # 添加 JPEG 支持
     libjpeg-turbo-devel \
-    libgomp-devel' \ 
+    libgomp-devel' \
     # 此处的 `runtimeDeps` 不仅表示 app 的运行时依赖，它还包括构建 app 所需的依赖。
     && runtimeDeps=' \
     # Elixir 运行时依赖
