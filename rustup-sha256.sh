@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-RUSTUP_VERSION=1.27.1
+RUSTUP_VERSION=1.28.2
 
 function get_sha256() {
     local arch=$1
